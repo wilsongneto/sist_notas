@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block conteudo %}
+
+<h2>Relatório da turma</h2>
+
+{% if dados.total == 0 %}
+    <p>Nenhum aluno cadastrado.</p>
+{% else %}
+    <div class="cartoes">
+        <div class="cartao"><span>{{dados.total}}</span>Alunos</div>
+        <div class="cartao"><span>{{"%.2f"|format(dados.media_turma)}}</span>Média da turma</div>
+        <div class="cartao aprovado"><span>{{dados.aprovados}}</span>Aprovados</div>
+        <div class="cartao recuperacao"><span>{{dados.recuperacao}}</span>Recuperacao</div>
+        <div class="cartao reprovado"><span>{{dados.reprovados}}</span>Reprovados</div>
+    </div>
+    <p>Melhor média: <strong>{{dados.melhor.nome}}</strong>({{"%.1f|format(dados.melhor.media)"}})</p>
+    {% endif %}
+    {% endblock %}

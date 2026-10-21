@@ -1,0 +1,39 @@
+{# form.html - formulário usado para CADASTRAR e para EDITAR.
+   Variáveis recebidas do Python:
+     titulo   -> texto do título da página
+     aluno    -> dados para preencher os campos (ou None, se for novo)
+     editando -> True quando é edição (aí o nome fica bloqueado) #}
+{% extends "base.html" %}
+
+{% block conteudo %}
+<h2>{{ titulo }}</h2>
+
+{# method="post" sem "action": envia para o MESMO endereço da página atual #}
+<form method="post" class="formulario">
+
+  <label>Nome
+    {% if editando %}
+      {# disabled: aparece, mas o usuário não pode alterar nem é enviado #}
+      <input type="text" value="{{ aluno.nome }}" disabled>
+    {% else %}
+      {# name="nome" é a chave que o Python lê: request.form["nome"].
+         required: o navegador não deixa enviar vazio. #}
+      <input type="text" name="nome" value="{{ aluno.nome if aluno else '' }}" required autofocus>
+    {% endif %}
+  </label>
+
+  {# inputmode="decimal" abre o teclado numérico no celular #}
+  <label>Nota 1 (0 a 10)
+    <input type="text" name="nota1" inputmode="decimal" value="{{ aluno.nota1 if aluno else '' }}" required>
+  </label>
+
+  <label>Nota 2 (0 a 10)
+    <input type="text" name="nota2" inputmode="decimal" value="{{ aluno.nota2 if aluno else '' }}" required>
+  </label>
+
+  <div>
+    <button type="submit">Salvar</button>
+    <a href="{{ url_for('inicio') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

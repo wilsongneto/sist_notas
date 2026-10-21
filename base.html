@@ -1,0 +1,44 @@
+{# ============================================================
+   base.html  -  a "moldura" de TODAS as páginas.
+   As outras páginas usam {% extends "base.html" %} e só preenchem
+   o bloco "conteudo". Assim não repetimos cabeçalho e menu.
+   Comentários {# ... #} NÃO aparecem no HTML final.
+   ============================================================ #}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  {# deixa o site bonito no celular #}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {# bloco "titulo": cada página pode trocar o título da aba #}
+  <title>{% block titulo %}Sistema de Notas{% endblock %}</title>
+
+  {# url_for('static', ...) monta o caminho do arquivo dentro da pasta static #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Sistema de Notas Escolar</h1>
+    <nav>
+      {# url_for('inicio') gera o endereço da função inicio() do app.py #}
+      <a href="{{ url_for('inicio') }}">Alunos</a>
+      <a href="{{ url_for('novo') }}">Novo aluno</a>
+      <a href="{{ url_for('relatorio') }}">Relatório</a>
+    </nav>
+  </header>
+
+  <main>
+    {# Mensagens enviadas pelo Python com flash() aparecem aqui.
+       "categoria" é "ok" ou "erro" (define a cor do aviso). #}
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% for categoria, texto in mensagens %}
+        <p class="aviso {{ categoria }}">{{ texto }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    {# bloco "conteudo": aqui entra o que é específico de cada página #}
+    {% block conteudo %}{% endblock %}
+  </main>
+</body>
+</html>
